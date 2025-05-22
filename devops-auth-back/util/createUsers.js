@@ -3,13 +3,14 @@ const bcrypt = require("bcrypt");
 const fs = require("fs");
 const path = require("path");
 const User = require("../models/user");
+require("dotenv").config();
 
 async function createUsers() {
   await mongoose.connect(process.env.DB_CONNECTION);
   console.log("connected to MongoDB");
 
   const usersData = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "data", "users.json"), "utf8")
+    fs.readFileSync(path.join(__dirname, "../data", "users.json"), "utf8")
   );
 
   for (const userData of usersData) {
@@ -31,4 +32,4 @@ async function createUsers() {
   console.log("Completed");
 }
 
-createUsers.catch(console.error);
+createUsers().catch(console.error);
