@@ -26,13 +26,15 @@ export default function Login() {
         }),
       });
 
+      const json = await response.json();
+
       if (response.ok) {
         console.log("Login successful");
+        auth.login(json.body.data);
         setErrorResponse("");
-        goTo("/");
+        goTo("/dashboard");
       } else {
         console.log("Something went wrong");
-        const json = await response.json();
         setErrorResponse(json.body.error);
         return;
       }

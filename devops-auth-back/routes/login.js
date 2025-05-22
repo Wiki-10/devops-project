@@ -35,8 +35,6 @@ router.post("/", async (req, res) => {
 
   const token = jwt.sign(
     {
-      id: user._id,
-      username: user.username,
       role: user.role,
     },
     JWT_SECRET,
@@ -45,8 +43,7 @@ router.post("/", async (req, res) => {
 
   res.status(200).json(
     jsonResponse(200, {
-      user: { id: user._id, username: user.username, role: user.role },
-      token,
+      data: token,
     })
   );
 });
