@@ -1,24 +1,54 @@
 const router = require("express").Router();
-const { jsonResponse } = require("../lib/jsonResponse");
+const { jsonResponse } = require("../util/jsonResponse");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
-router.post("/", (req, res) => {
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
+
+router.post("/", async (req, res) => {
   const { username, password } = req.body;
 
+  // Check if fields are filled
   if (!username || !password) {
-    return res.status(400).json(
-      jsonResponse(400, {
-        error: "Fields are required",
+    return res
+      .status(400)
+      .json(jsonResponse(401, { error: "All fields need to be filled" }));
+  }
+  // assign user to the user in the database
+  const user = await User.findOne({ username });
+
+  if (!user)
+    return res.status(401).json(
+      jsonResponse(401, {
+        error: "Invalid credentials",
       })
     );
-  }
 
-  // autenticar usuario
-  const user = {
-    id: "1",
-    name: "John Doe",
-    username: "xxxxxx",
-  };
-  res.status(200).json(jsonResponse(200, { user }));
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch)
+    return res.status(401).json(
+      jsonResponse(401, {
+        error: "Invalid credentials",
+      })
+    );
+
+  const token = jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      role: user.role,
+    },
+    JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  res.status(200).json(
+    jsonResponse(200, {
+      user: { id: user._id, username: user.username, role: user.role },
+      token,
+    })
+  );
 });
 
 module.exports = router;
