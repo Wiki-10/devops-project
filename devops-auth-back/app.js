@@ -18,10 +18,11 @@ async function connect() {
 connect().catch(console.error);
 
 app.use("/api/login", require("./routes/login"));
+app.use("/api/_health", require("./routes/health"));
+app.use("/api/cidr-to-mask", require("./routes/cidr-to-mask"));
+app.use("/api/mask-to-cidr", require("./routes/mask-to-cidr"));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.get("/", (req, res) => res.status(200).send("OK"));
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

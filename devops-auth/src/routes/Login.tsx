@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import DefaultLayout from "../layout/DefaultLayout";
+
 import { useState } from "react";
 import { API_URL } from "../auth/constants";
 
@@ -48,25 +48,23 @@ export default function Login() {
   }
 
   return (
-    <DefaultLayout>
-      <form className="form" onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        {!!errorResponse && <div className="errorMessage">{errorResponse}</div>}
+    <form className="form" onSubmit={handleSubmit}>
+      <h1>Login</h1>
+      {!!errorResponse && <div className="errorMessage">{errorResponse}</div>}
 
-        <label htmlFor="">Username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Login</button>
-      </form>
-    </DefaultLayout>
+      <label htmlFor="">Username</label>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <label htmlFor="">Password</label>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button>Login</button>
+    </form>
   );
 }
