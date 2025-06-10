@@ -16,7 +16,6 @@ exports.maskToCidr = (req, res) => {
       .map((num) => num.toString(2))
       .map((bin) => bin.split("1").length - 1)
       .reduce((a, b) => a + b, 0);
-    // const cidr = ip.maskToPrefixLength(mask);
     res.status(200).json({
       function: "maskToCidr",
       input: mask,

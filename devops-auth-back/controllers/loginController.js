@@ -12,7 +12,7 @@ exports.login = async (req, res) => {
     if (!username || !password) {
       return res
         .status(400)
-        .json(jsonResponse(401, { error: "All fields need to be filled" }));
+        .json(jsonResponse(400, { error: "All fields need to be filled" }));
     }
     // assign user to the user in the database
     const user = await User.findOne({ username });
